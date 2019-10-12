@@ -12,12 +12,16 @@ public class Header {
     private Long sendTime;
     
     /**
+     * 应用秘钥
+     */
+    private String appKey;
+    
+    /**
 	 * 服务端接收时间
 	 */
 	private Long serverRevTime;
 	
 	
-
 	
 	public String getInfo() {
 		return info;
@@ -89,5 +93,13 @@ public class Header {
 
 	public void setServerRevTime(Long serverRevTime) {
 		this.serverRevTime = serverRevTime;
+	}
+
+	public String getAppKey() {
+		return appKey;
+	}
+
+	public void setAppKey(String appKey) {
+		this.appKey = appKey;
 	}
 }

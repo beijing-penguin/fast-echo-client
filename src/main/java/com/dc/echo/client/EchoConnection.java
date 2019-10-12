@@ -33,16 +33,10 @@ public class EchoConnection{
 	// 是否同步获取响应结果
 	private boolean sync = false;
 
-	private int keepaliveTimeout = 5;//秒
+	private int keepaliveTimeout = 30;//秒
 
 	public Thread keepaliveThread;
 
-	//    public EchoConnection(NettyConfig config){
-	//        bootstrap = config.getBootstrap();
-	//        group = config.getBoss();
-	//        host = config.getHost();
-	//        port = config.getPort();
-	//    }
 	public EchoConnection(String host,int port){
 		this.host = host;
 		this.port = port;
@@ -71,7 +65,7 @@ public class EchoConnection{
 				bootstrap = new Bootstrap()
 						.group(group)
 						.channel(NioSocketChannel.class)
-						.option(ChannelOption.SO_KEEPALIVE, true)
+						//.option(ChannelOption.SO_KEEPALIVE, true)
 						.option(ChannelOption.SO_REUSEADDR, true)
 						//禁用Nagle，Nagle算法就是为了尽可能发送大块数据，避免网络中充斥着许多小数据块。
 						.option(ChannelOption.TCP_NODELAY, true)
