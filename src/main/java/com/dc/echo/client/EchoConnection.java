@@ -4,6 +4,8 @@ package com.dc.echo.client;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import com.alibaba.fastjson.JSON;
+
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -33,7 +35,7 @@ public class EchoConnection{
 	// 是否同步获取响应结果
 	private boolean sync = false;
 
-	private int keepaliveTimeout = 30;//秒
+	private int keepaliveTimeout = 5;//心跳间隔秒
 
 	public Thread keepaliveThread;
 
@@ -82,7 +84,6 @@ public class EchoConnection{
 								pipeline.addLast("handler", new SimpleChannelInboundHandler<Message>() {
 									@Override
 									protected void channelRead0(ChannelHandlerContext ctx, Message message) throws Exception {
-										//System.err.println("客户端收到"+message.getHeaders());
 										if(sync) {
 											EchoConnection.message = message;
 											resultWait.countDown();
@@ -101,8 +102,8 @@ public class EchoConnection{
 
 									@Override
 									public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-										//System.out.println("Client close ");
-										//ctx.channel().close();
+										System.out.println("Client close ");
+										ctx.channel().close();
 									}
 									@Override
 									public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
@@ -111,18 +112,18 @@ public class EchoConnection{
 									}
 									@Override
 									public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-										//System.err.println("channelRegistered");
+										System.err.println("channelRegistered");
 									}
 
 									@Override
 									public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-										//System.err.println("channelUnregistered");
+										System.err.println("channelUnregistered");
 										close();
 									}
 
 									@Override
 									public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-										//System.err.println("userEventTriggered");
+										System.err.println("userEventTriggered");
 										ctx.close();
 									}
 								});
@@ -145,7 +146,9 @@ public class EchoConnection{
 			this.listener = listener;
 		}
 		if(channel==null || !channel.isOpen() || !channel.isActive()) {
-			throw new Exception("channel break,Unable to connect to server");
+			if(channel==null || !channel.isOpen() || !channel.isActive()) {
+				throw new Exception("channel break,Unable to connect to server");
+			}
 		}
 		channel.writeAndFlush(message);
 		if(sync) {
