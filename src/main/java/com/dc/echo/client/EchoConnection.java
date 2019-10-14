@@ -100,7 +100,7 @@ public class EchoConnection{
 									@Override
 									public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 										System.out.println("Client close ");
-										ctx.channel().close();
+										close();
 									}
 									@Override
 									public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
@@ -121,7 +121,7 @@ public class EchoConnection{
 									@Override
 									public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
 										System.err.println("userEventTriggered");
-										ctx.close();
+										close();
 									}
 								});
 							}
