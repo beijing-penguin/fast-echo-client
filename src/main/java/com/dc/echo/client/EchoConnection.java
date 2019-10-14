@@ -4,8 +4,6 @@ package com.dc.echo.client;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import com.alibaba.fastjson.JSON;
-
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -35,7 +33,7 @@ public class EchoConnection{
 	// 是否同步获取响应结果
 	private boolean sync = false;
 
-	private int keepaliveTimeout = 5;//心跳间隔秒
+	private int keepaliveTimeout = 30;//心跳间隔秒
 
 	public Thread keepaliveThread;
 
@@ -84,7 +82,6 @@ public class EchoConnection{
 								pipeline.addLast("handler", new SimpleChannelInboundHandler<Message>() {
 									@Override
 									protected void channelRead0(ChannelHandlerContext ctx, Message message) throws Exception {
-										System.err.println("客户端收到"+message);
 										if(sync) {
 											EchoConnection.message = message;
 											resultWait.countDown();
@@ -137,15 +134,13 @@ public class EchoConnection{
 		}
 		return this;
 	}
-	public Message sendMessage(Message message,MessageListener listener) throws Throwable{
+	public Message sendMessage(Message message) throws Throwable{
 		if(sync) {
 			EchoConnection.message=null;
 			EchoConnection.resultWait = new CountDownLatch(1);
 		}
-		if(listener!=null ) {
-			this.listener = listener;
-		}
 		if(channel==null || !channel.isOpen() || !channel.isActive()) {
+			connect();//重连一次
 			if(channel==null || !channel.isOpen() || !channel.isActive()) {
 				throw new Exception("channel break,Unable to connect to server");
 			}
@@ -161,9 +156,6 @@ public class EchoConnection{
 		}else {
 			return null;
 		}
-	}
-	public Message sendMessage(Message message) throws Throwable{
-		return sendMessage(message, null);
 	}
 	public void close() {
 		if(channel!=null){
