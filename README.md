@@ -1,4 +1,6 @@
-### window/linux 打开命令控制台，执行
+### 下载fast-echo-client项目，里面有个已经打包好的fast-echo-client-0.0.1-SNAPSHOT.jar  也可以自己mvn clean install打包
+
+### 去到fast-echo-client-0.0.1-SNAPSHOT.jar所在目录，在window/linux 打开命令控制台，执行
 >java -jar fast-echo-client-0.0.1-SNAPSHOT.jar  
 
 ### 输入自己的用户名，并设置对方的用户名，即可开始聊天
