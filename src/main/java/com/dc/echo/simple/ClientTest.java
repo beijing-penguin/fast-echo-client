@@ -64,8 +64,7 @@ public class ClientTest {
                     
                         message.setBody(context.getBytes());
                         conn.setSync(false);
-                        conn.sendMessage(message,new MessageListener() {
-							
+                        conn.setListener(new MessageListener() {
 							@Override
 							public void callback(ChannelHandlerContext ctx, Message message) {
 								Header header = JSON.parseObject(message.getHeader(), Header.class);
@@ -81,7 +80,8 @@ public class ClientTest {
 				                    }
 				                }
 							}
-						});//发送消息
+						});
+                        conn.sendMessage(message);//发送消息
                 }catch (Exception e) {
                     e.printStackTrace();
                 }

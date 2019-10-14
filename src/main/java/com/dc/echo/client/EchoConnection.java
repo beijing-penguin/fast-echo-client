@@ -84,13 +84,13 @@ public class EchoConnection{
 								pipeline.addLast("handler", new SimpleChannelInboundHandler<Message>() {
 									@Override
 									protected void channelRead0(ChannelHandlerContext ctx, Message message) throws Exception {
+										System.err.println("客户端收到"+message);
 										if(sync) {
 											EchoConnection.message = message;
 											resultWait.countDown();
-										}else {
-											if(listener!=null) {
-												listener.callback(ctx,message);
-											}
+										}
+										if(listener!=null) {
+											listener.callback(ctx,message);
 										}
 									}
 
