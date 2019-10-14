@@ -15,7 +15,7 @@ import io.netty.channel.ChannelHandlerContext;
 
 public class ClientTest {
 	public static void main(String[] args) throws Throwable {
-		EchoConnection conn = new EchoConnection("47.104.77.145", 3333);
+		EchoConnection conn = new EchoConnection("47.104.77.145", 6666);
 		conn.setListener(new MessageListener() {
 			@Override
 			public void callback(ChannelHandlerContext ctx, Message message) {
