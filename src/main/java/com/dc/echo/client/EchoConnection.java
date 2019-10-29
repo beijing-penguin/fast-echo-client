@@ -46,21 +46,23 @@ public class EchoConnection{
 			if(group==null) {
 				group = new NioEventLoopGroup(1);
 			}
-			//开启心跳程序
-			keepaliveThread = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					while(keepaliveThread!=null) {
-						try {
-							Thread.sleep(keepaliveTimeout*1000);
-							sendMessage(EchoCoreUtils.getKeepaliveMess());
-						} catch (Throwable e) {
-							return;
+			if(keepaliveTimeout>0) {
+				//开启心跳程序
+				keepaliveThread = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						while(keepaliveThread!=null) {
+							try {
+								Thread.sleep(keepaliveTimeout*1000);
+								sendMessage(EchoCoreUtils.getKeepaliveMess());
+							} catch (Throwable e) {
+								return;
+							}
 						}
 					}
-				}
-			});
-			keepaliveThread.start();
+				});
+				keepaliveThread.start();
+			}
 			if(bootstrap==null) {
 				bootstrap = new Bootstrap()
 						.group(group)
@@ -214,4 +216,11 @@ public class EchoConnection{
 		this.listener = listener;
 		return this;
 	}
+	public int getKeepaliveTimeout() {
+		return keepaliveTimeout;
+	}
+	public void setKeepaliveTimeout(int keepaliveTimeout) {
+		this.keepaliveTimeout = keepaliveTimeout;
+	}
+	
 }
