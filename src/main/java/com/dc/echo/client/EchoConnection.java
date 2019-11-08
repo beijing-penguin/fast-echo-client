@@ -47,25 +47,25 @@ public class EchoConnection{
 				group = new NioEventLoopGroup(1);
 			}
 			if(keepaliveTimeout>0) {
-				//开启心跳程序
-				keepaliveThread = new Thread(new Runnable() {
-					@Override
-					public void run() {
-						while(keepaliveThread!=null) {
-							try {
-								Thread.sleep(keepaliveTimeout*1000);
-								sendMessage(EchoCoreUtils.getKeepaliveMess());
-							} catch (Throwable e) {
-								return;
-							}
-						}
-					}
-				});
-				keepaliveThread.start();
-			}
+	            //开启心跳程序
+	            keepaliveThread = new Thread(new Runnable() {
+	                @Override
+	                public void run() {
+	                    while(keepaliveThread!=null) {
+	                        try {
+	                            Thread.sleep(keepaliveTimeout*1000);
+	                            sendMessage(EchoCoreUtils.getKeepaliveMess());
+	                        } catch (Throwable e) {
+	                            e.printStackTrace();
+	                        }
+	                    }
+	                }
+	            });
+	            keepaliveThread.start();
+	        }
 			if(bootstrap==null) {
 				bootstrap = new Bootstrap()
-						.group(group)
+				        .group(group)
 						.channel(NioSocketChannel.class)
 						//.option(ChannelOption.SO_KEEPALIVE, true)
 						.option(ChannelOption.SO_REUSEADDR, true)
@@ -96,7 +96,6 @@ public class EchoConnection{
 									@Override
 									public void channelActive(ChannelHandlerContext ctx) throws Exception {
 										System.out.println("Client active ");
-										super.channelActive(ctx);
 									}
 
 									@Override
@@ -170,6 +169,7 @@ public class EchoConnection{
 			group = null;
 		}
 		if(keepaliveThread!=null) {
+		    keepaliveThread.interrupt();
 			keepaliveThread = null;
 		}
 		bootstrap= null;
