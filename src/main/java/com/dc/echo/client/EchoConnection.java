@@ -20,7 +20,7 @@ public class EchoConnection{
 
 	public static CountDownLatch  resultWait;
 
-	private static Message message = null;
+	private static byte[] dataByteArr = null;
 
 	private int readTimeOut = 10;//秒
 	private EventLoopGroup group;
@@ -81,15 +81,15 @@ public class EchoConnection{
 								//                pipeline.addLast("encoder", new StringEncoder());
 								pipeline.addLast("decoder", new MessageDecoder());
 								pipeline.addLast("encoder", new MessageEncoder());
-								pipeline.addLast("handler", new SimpleChannelInboundHandler<Message>() {
+								pipeline.addLast("handler", new SimpleChannelInboundHandler<byte[]>() {
 									@Override
-									protected void channelRead0(ChannelHandlerContext ctx, Message message) throws Exception {
+									protected void channelRead0(ChannelHandlerContext ctx, byte[] dataByteArr) throws Exception {
 										if(sync) {
-											EchoConnection.message = message;
+											EchoConnection.dataByteArr = dataByteArr;
 											resultWait.countDown();
 										}
 										if(listener!=null) {
-											listener.callback(ctx,message);
+											listener.callback(ctx,dataByteArr);
 										}
 									}
 
@@ -135,9 +135,9 @@ public class EchoConnection{
 		}
 		return this;
 	}
-	public Message sendMessage(Message message) throws Throwable{
+	public byte[] sendMessage(byte[] message) throws Throwable{
 		if(sync) {
-			EchoConnection.message=null;
+			EchoConnection.dataByteArr=null;
 			EchoConnection.resultWait = new CountDownLatch(1);
 		}
 		if(channel==null || !channel.isOpen() || !channel.isActive()) {
@@ -150,10 +150,10 @@ public class EchoConnection{
 		if(sync) {
 			EchoConnection.resultWait.await(readTimeOut,TimeUnit.SECONDS);
 			if(EchoConnection.resultWait.getCount()!=0) {
-				EchoConnection.message = null;
+				EchoConnection.dataByteArr = null;
 				throw new Exception("send fail");
 			}
-			return EchoConnection.message;
+			return EchoConnection.dataByteArr;
 		}else {
 			return null;
 		}
@@ -196,13 +196,15 @@ public class EchoConnection{
 	public void setReadTimeOut(int readTimeOut) {
 		this.readTimeOut = readTimeOut;
 	}
-	public static Message getMessage() {
-		return message;
-	}
-	public static void setMessage(Message message) {
-		EchoConnection.message = message;
-	}
-	public boolean isSync() {
+	
+	
+    public static byte[] getDataByteArr() {
+        return dataByteArr;
+    }
+    public static void setDataByteArr(byte[] dataByteArr) {
+        EchoConnection.dataByteArr = dataByteArr;
+    }
+    public boolean isSync() {
 		return sync;
 	}
 	public EchoConnection setSync(boolean sync) {

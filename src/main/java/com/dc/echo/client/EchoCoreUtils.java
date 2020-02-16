@@ -3,25 +3,25 @@ package com.dc.echo.client;
 import com.alibaba.fastjson.JSON;
 
 public class EchoCoreUtils {
-    public static Message getMessByCode(Integer statusCode) {
+    public static byte[] getMessByCode(Integer msgType) {
         Message msg = new Message();
-        Header header = new Header();
-        header.setStatusCode(statusCode);
-        msg.setHeader(JSON.toJSONString(header));
-        return msg;
+        msg.setMsgCode(msgType);
+        return JSON.toJSONString(msg).getBytes();
     }
-    public static Message getKeepaliveMess() {
+    public static byte[] getKeepaliveMess() {
         Message msg = new Message();
-        Header header = new Header();
-        header.setMsgType(EchoCode.HEARTBEAT_ACTION);//心跳
-        msg.setHeader(JSON.toJSONString(header));
-        return msg;
+        msg.setMsgCode(MsgCode.HEARTBEAT_ACTION);
+        return JSON.toJSONString(msg).getBytes();
     }
     public static Message getErrorMess() {
         Message msg = new Message();
-        Header header = new Header();
-        header.setMsgType(EchoCode.ERROR);//心跳
-        msg.setHeader(JSON.toJSONString(header));
+        msg.setMsgCode(MsgCode.ERROR);
         return msg;
+    }
+    public static Message byteToMessage(byte[] dataByteArr) {
+        return JSON.parseObject(new String(dataByteArr), Message.class);
+    }
+    public static byte[] messageToByteArr(Message msg) {
+        return JSON.toJSONString(msg).getBytes();
     }
 }
