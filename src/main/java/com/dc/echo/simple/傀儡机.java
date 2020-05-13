@@ -2,6 +2,7 @@ package com.dc.echo.simple;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -10,6 +11,8 @@ import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -37,7 +40,7 @@ public class 傀儡机 {
                             myRobot.mouseMove(Integer.parseInt(message.getContent().split(",")[0]), Integer.parseInt(message.getContent().split(",")[1]));;
                         }
                         if (message.getMsgCode() == 5) {//鼠标按住
-                        	myRobot.mouseMove(Integer.parseInt(message.getContent().split(",")[0]), Integer.parseInt(message.getContent().split(",")[1]));;
+                            myRobot.mouseMove(Integer.parseInt(message.getContent().split(",")[0]), Integer.parseInt(message.getContent().split(",")[1]));;
                             myRobot.mousePress(InputEvent.BUTTON1_MASK);
                         }
                         if (message.getMsgCode() == 6) {//鼠标释放
@@ -102,16 +105,22 @@ public class 傀儡机 {
 
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 BufferedImage image = new Robot().createScreenCapture(new Rectangle(screenSize));
-                
-                
-                    Graphics g = image.getGraphics();
-                    Image scaledImage = image.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
-                    BufferedImage ret = new BufferedImage(1200, 800, BufferedImage.TYPE_INT_RGB);
-                    g = ret.getGraphics();
-                    g.drawImage(scaledImage, 0, 0, null);
+
+
+                Graphics g = image.getGraphics();
+                Image scaledImage = image.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
+                BufferedImage ret = new BufferedImage(1200, 800, BufferedImage.TYPE_INT_RGB);
+                g = ret.getGraphics();
+                g.drawImage(scaledImage, 0, 0, null);
+
+
+                BufferedImage bufferedImage = new BufferedImage(scaledImage.getWidth(null), scaledImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
+                Graphics2D graphics = bufferedImage.createGraphics();
+                //重构图片 
+                graphics.drawImage(scaledImage, 0, 0, scaledImage.getWidth(null), scaledImage.getHeight(null), null);
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-                Thumbnails.of((BufferedImage)scaledImage).scale(1).outputQuality(0.25f).outputFormat("jpg").toOutputStream(out);
+                Thumbnails.of(bufferedImage).scale(1).outputQuality(0.25f).outputFormat("jpg").toOutputStream(out);
                 out.flush();
                 message.setContent(Base64.encodeBase64String(out.toByteArray()));
                 conn.setSync(false);//设置异步请求
