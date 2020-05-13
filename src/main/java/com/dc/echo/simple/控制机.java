@@ -1,6 +1,7 @@
 package com.dc.echo.simple;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -15,6 +16,9 @@ import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -39,17 +43,39 @@ public class 控制机 {
         conn.setListener(new MessageListener() {
             @Override
             public void callback(ChannelHandlerContext ctx, byte[] dataByteArr) {
-                Message message = EchoCoreUtils.byteToMessage(dataByteArr);
-                if (message.getSender() != null) {
-                    try {
-                        if (message.getMsgCode() == EchoCode.MESSAGE_TRANS_ACTION) {
+                Message message = null;
+                try {
+                    message = EchoCoreUtils.byteToMessage(dataByteArr);
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if(message!=null && message.getContent()!=null) {
+                    if (message.getSender() != null) {
+                        try {
+                            if (message.getMsgCode() == EchoCode.MESSAGE_TRANS_ACTION) {
 
-                            ImageIcon ii = new ImageIcon(Base64.decodeBase64(message.getContent()));
-                            frame.setSize(ii.getIconWidth(), ii.getIconHeight());
-                            frame.getGraphics().drawImage(ii.getImage(), 0, 0, null);
+                                ImageIcon ii = new ImageIcon(Base64.decodeBase64(message.getContent()));
+                                //                            JLayeredPane layeredPane = new JLayeredPane();
+                                //                            layeredPane.setBounds(0, 0, ii.getIconWidth(), ii.getIconHeight());
+                                //                            frame.add(layeredPane);
+                                //                            
+                                //                            JPanel bgPanel = new JPanel();
+                                //                            bgPanel.setBounds(0, 0, ii.getIconWidth(), ii.getIconHeight());
+                                //                            layeredPane.add(bgPanel);
+                                //                            
+                                //                            //背景图片，添加到背景Panel里面
+                                //                            JLabel bgLabel = new JLabel(ii);
+                                //                            bgPanel.add(bgLabel);
+                                //                            
+
+                                frame.setSize(ii.getIconWidth(), ii.getIconHeight());
+                                Graphics gg = frame.getGraphics();
+                                gg.drawImage(ii.getImage(), 0, 0, null);
+                                gg.dispose();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 }
             }
@@ -108,6 +134,11 @@ public class 控制机 {
                 } catch (Throwable e1) {
                     e1.printStackTrace();
                 }
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
             }
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -125,7 +156,11 @@ public class 控制机 {
                 } catch (Throwable e1) {
                     e1.printStackTrace();
                 }
-
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
 
             }
         });
@@ -235,6 +270,11 @@ public class 控制机 {
                 try {
                     conn.sendMessage(EchoCoreUtils.messageToByteArr(message));
                 } catch (Throwable e1) {
+                    e1.printStackTrace();
+                }
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
             }

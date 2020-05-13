@@ -44,7 +44,7 @@ public class EchoConnection{
 	public EchoConnection connect() throws Throwable{
 		try {
 			if(group==null) {
-				group = new NioEventLoopGroup(1);
+				group = new NioEventLoopGroup(16);
 			}
 			if(keepaliveTimeout>0) {
 	            //开启心跳程序
@@ -74,7 +74,7 @@ public class EchoConnection{
 						.handler(new ChannelInitializer<SocketChannel>() {
 							@Override
 							protected void initChannel(SocketChannel ch) throws Exception {
-								ch.config().setAllowHalfClosure(true);
+								//ch.config().setAllowHalfClosure(true);
 								ChannelPipeline pipeline = ch.pipeline();
 								//                pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
 								//                pipeline.addLast("decoder", new StringDecoder());
