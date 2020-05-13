@@ -7,6 +7,8 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.Scanner;
@@ -92,7 +94,6 @@ public class 控制机 {
         frame.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                System.err.println(e.getX()+"="+e.getY());
 
                 Message message = new Message();
                 message.setVersion("1.0");
@@ -110,7 +111,6 @@ public class 控制机 {
             }
             @Override
             public void mouseDragged(MouseEvent e) {
-                System.err.println("mouseDragged="+e.getX()+"="+e.getY());
 
                 Message message = new Message();
                 message.setVersion("1.0");
@@ -168,7 +168,6 @@ public class 控制机 {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                System.err.println(e.getX()+"="+e.getY());
                 if(e.getButton()==MouseEvent.BUTTON3){//右击键
                     Message message = new Message();
                     message.setVersion("1.0");
@@ -215,6 +214,29 @@ public class 控制机 {
             @Override
             public void mouseClicked(MouseEvent e) {
 
+            }
+        });
+        frame.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                int amount = e.getScrollAmount();
+                if(e.getWheelRotation()==-1) {
+                    amount = -amount;
+                }
+
+                Message message = new Message();
+                message.setVersion("1.0");
+                message.setMsgCode(9);
+                message.setReceiver(new String[] {receiver});
+                message.setSender(username2);
+                message.setEncoding(encoding);
+                message.setSendTime(System.currentTimeMillis());
+                message.setContent(amount+"");
+                try {
+                    conn.sendMessage(EchoCoreUtils.messageToByteArr(message));
+                } catch (Throwable e1) {
+                    e1.printStackTrace();
+                }
             }
         });
         try {

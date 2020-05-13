@@ -50,6 +50,9 @@ public class 傀儡机 {
                             myRobot.mouseMove(Integer.parseInt(message.getContent().split(",")[0]), Integer.parseInt(message.getContent().split(",")[1]));;
                             myRobot.mouseRelease(InputEvent.BUTTON3_MASK);
                         }
+                        if (message.getMsgCode() == 9) {//滚动
+                            myRobot.mouseWheel(Integer.parseInt(message.getContent()));
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

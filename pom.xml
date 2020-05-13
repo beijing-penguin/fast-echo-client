@@ -76,7 +76,7 @@
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.dc.echo.simple.控制机</mainClass>
+									<mainClass>com.dc.echo.simple.傀儡机</mainClass>
 								</transformer>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
