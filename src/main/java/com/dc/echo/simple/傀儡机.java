@@ -104,7 +104,7 @@ public class 傀儡机 {
                 message.setSendTime(System.currentTimeMillis());
 
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                BufferedImage image = new Robot().createScreenCapture(new Rectangle(screenSize));
+                BufferedImage image = myRobot.createScreenCapture(new Rectangle(screenSize));
 
 //
 //                Graphics g = image.getGraphics();
