@@ -125,7 +125,7 @@ public class 傀儡机 {
                 message.setContent(Base64.encodeBase64String(out.toByteArray()));
                 conn.setSync(false);//设置异步请求
                 conn.sendMessage(EchoCoreUtils.messageToByteArr(message));//发送消息
-                Thread.sleep(20);
+                Thread.sleep(80);
             }
         }catch (Exception e) {
             e.printStackTrace();
