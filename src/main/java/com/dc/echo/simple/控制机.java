@@ -135,7 +135,7 @@ public class 控制机 {
                     e1.printStackTrace();
                 }
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(20);
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
@@ -157,7 +157,7 @@ public class 控制机 {
                     e1.printStackTrace();
                 }
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(20);
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
@@ -273,7 +273,7 @@ public class 控制机 {
                     e1.printStackTrace();
                 }
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(20);
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
@@ -298,7 +298,7 @@ public class 控制机 {
                 message.setContent(Base64.encodeBase64String(out.toByteArray()));
                 conn.setSync(false);//设置异步请求
                 conn.sendMessage(EchoCoreUtils.messageToByteArr(message));//发送消息
-                Thread.sleep(50);
+                Thread.sleep(20);
             }
         }catch (Exception e) {
             e.printStackTrace();
