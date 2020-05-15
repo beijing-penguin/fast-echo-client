@@ -102,14 +102,14 @@ public class 傀儡机 {
 
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 BufferedImage image = myRobot.createScreenCapture(new Rectangle(screenSize));
-                int w = image.getWidth();  
-                int h = image.getHeight();  
-                BufferedImage dimg = new BufferedImage(w/2, h/2, image.getType());  
-                Graphics2D g = dimg.createGraphics();  
-                g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);  
-                g.drawImage(image, 0, 0, w/2, h/2, 0, 0, w, h, null);  
-                g.dispose();  
+//                int w = image.getWidth();  
+//                int h = image.getHeight();  
+//                BufferedImage dimg = new BufferedImage(w/2, h/2, image.getType());  
+//                Graphics2D g = dimg.createGraphics();  
+//                g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+//                RenderingHints.VALUE_INTERPOLATION_BILINEAR);  
+//                g.drawImage(image, 0, 0, w/2, h/2, 0, 0, w, h, null);  
+//                g.dispose();  
 //
 //                Graphics g = image.getGraphics();
 //                Image scaledImage = image.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
@@ -124,7 +124,7 @@ public class 傀儡机 {
 //                graphics.drawImage(scaledImage, 0, 0, scaledImage.getWidth(null), scaledImage.getHeight(null), null);
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-                Thumbnails.of(dimg).scale(1).outputQuality(0.25f).outputFormat("jpg").toOutputStream(out);
+                Thumbnails.of(image).scale(1).outputQuality(0.25f).outputFormat("jpg").toOutputStream(out);
                 out.flush();
                 message.setContent(Base64.encodeBase64String(out.toByteArray()));
                 conn.setSync(false);//设置异步请求
