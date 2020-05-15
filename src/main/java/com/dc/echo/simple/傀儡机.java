@@ -1,9 +1,6 @@
 package com.dc.echo.simple;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -11,8 +8,6 @@ import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.Scanner;
-
-import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -64,7 +59,7 @@ public class 傀儡机 {
                 }
             }
         });
-        conn.setReadTimeOut(10);//10s超时
+        conn.setReadTimeOut(30);//10s超时
         conn.setSync(true);//开启同步请求
         conn.connect();
 

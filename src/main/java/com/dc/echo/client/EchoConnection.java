@@ -15,6 +15,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.ReferenceCountUtil;
 
 public class EchoConnection{
 
@@ -67,8 +68,9 @@ public class EchoConnection{
 				bootstrap = new Bootstrap()
 				        .group(group)
 						.channel(NioSocketChannel.class)
+						.option(ChannelOption.SO_SNDBUF, 65535*10)
+						.option(ChannelOption.SO_RCVBUF, 65535*10)
 						.option(ChannelOption.SO_KEEPALIVE, false)
-						.option(ChannelOption.SO_REUSEADDR, true)
 						//禁用Nagle，Nagle算法就是为了尽可能发送大块数据，避免网络中充斥着许多小数据块。
 						.option(ChannelOption.TCP_NODELAY, true)
 						.handler(new ChannelInitializer<SocketChannel>() {
@@ -91,6 +93,7 @@ public class EchoConnection{
 										if(listener!=null) {
 											listener.callback(ctx,dataByteArr);
 										}
+										ReferenceCountUtil.release(dataByteArr);
 									}
 
 									@Override
