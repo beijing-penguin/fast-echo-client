@@ -2,7 +2,9 @@ package com.dc.echo.simple;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
@@ -11,14 +13,13 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Scanner;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -53,7 +54,19 @@ public class 控制机 {
                     if (message.getSender() != null) {
                         try {
                             if (message.getMsgCode() == EchoCode.MESSAGE_TRANS_ACTION) {
-
+//                                BufferedImage img = ImageIO.read(new ByteArrayInputStream(Base64.decodeBase64(message.getContent())));
+//                                int w = img.getWidth();  
+//                                int h = img.getHeight(); 
+//                                
+//                                
+//                                BufferedImage dimg = new BufferedImage(img.getWidth()*2, img.getHeight()*2, img.getType());  
+//                                Graphics2D g = dimg.createGraphics();  
+//                                g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+//                                RenderingHints.VALUE_INTERPOLATION_BILINEAR);  
+//                                g.drawImage(img, 0, 0, img.getWidth()*2, img.getHeight()*2, 0, 0, w, h, null);  
+//                                g.dispose();
+//                                
+                                
                                 ImageIcon ii = new ImageIcon(Base64.decodeBase64(message.getContent()));
                                 //                            JLayeredPane layeredPane = new JLayeredPane();
                                 //                            layeredPane.setBounds(0, 0, ii.getIconWidth(), ii.getIconHeight());
@@ -68,7 +81,7 @@ public class 控制机 {
                                 //                            bgPanel.add(bgLabel);
                                 //                            
 
-                                frame.setSize(ii.getIconWidth(), ii.getIconHeight());
+                                frame.setSize(ii.getIconWidth()*2, ii.getIconHeight()*2);
                                 Graphics gg = frame.getGraphics();
                                 gg.drawImage(ii.getImage(), 0, 0, null);
                                 gg.dispose();
@@ -135,7 +148,7 @@ public class 控制机 {
                     e1.printStackTrace();
                 }
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(10);
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
@@ -157,7 +170,7 @@ public class 控制机 {
                     e1.printStackTrace();
                 }
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(10);
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
@@ -273,36 +286,36 @@ public class 控制机 {
                     e1.printStackTrace();
                 }
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(10);
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
             }
         });
-        try {
-            while(true) {
-                Message message = new Message();
-                message.setVersion("1.0");
-                message.setMsgCode(EchoCode.MESSAGE_TRANS_ACTION);
-                message.setReceiver(new String[] {receiver});
-                message.setSender(username);
-                message.setEncoding(encoding);
-                message.setSendTime(System.currentTimeMillis());
-
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                BufferedImage image = new Robot().createScreenCapture(new Rectangle(screenSize));
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-                Thumbnails.of(image).scale(0.8D).outputQuality(0.25f).outputFormat("jpg").toOutputStream(out);
-                out.flush();
-                message.setContent(Base64.encodeBase64String(out.toByteArray()));
-                conn.setSync(false);//设置异步请求
-                conn.sendMessage(EchoCoreUtils.messageToByteArr(message));//发送消息
-                Thread.sleep(20);
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            while(true) {
+//                Message message = new Message();
+//                message.setVersion("1.0");
+//                message.setMsgCode(EchoCode.MESSAGE_TRANS_ACTION);
+//                message.setReceiver(new String[] {receiver});
+//                message.setSender(username);
+//                message.setEncoding(encoding);
+//                message.setSendTime(System.currentTimeMillis());
+//
+//                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//                BufferedImage image = new Robot().createScreenCapture(new Rectangle(screenSize));
+//                ByteArrayOutputStream out = new ByteArrayOutputStream();
+//
+//                Thumbnails.of(image).scale(0.8D).outputQuality(0.25f).outputFormat("jpg").toOutputStream(out);
+//                out.flush();
+//                message.setContent(Base64.encodeBase64String(out.toByteArray()));
+//                conn.setSync(false);//设置异步请求
+//                conn.sendMessage(EchoCoreUtils.messageToByteArr(message));//发送消息
+//                Thread.sleep(20);
+//            }
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
         System.out.print(username+":");
         sc.close();
     }
