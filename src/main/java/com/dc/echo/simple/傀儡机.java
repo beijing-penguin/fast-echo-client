@@ -61,6 +61,14 @@ public class 傀儡机 {
                             myRobot.mouseWheel(Integer.parseInt(message.getContent()));
                             myRobot.delay(10);
                         }
+                        if (message.getMsgCode() == 11) {//
+                            myRobot.keyPress(Integer.parseInt(message.getContent()));
+                            myRobot.delay(10);
+                        }
+                        if (message.getMsgCode() == 12) {//
+                            myRobot.keyRelease(Integer.parseInt(message.getContent()));
+                            myRobot.delay(10);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

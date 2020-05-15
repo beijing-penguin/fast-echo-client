@@ -7,6 +7,8 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Robot;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -41,6 +43,7 @@ public class 控制机 {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        frame.setFocusable(true);
         conn.setListener(new MessageListener() {
             @Override
             public void callback(ChannelHandlerContext ctx, byte[] dataByteArr) {
@@ -130,6 +133,43 @@ public class 控制机 {
 
 
         final String username2 = username;
+frame.addKeyListener(new KeyListener() {
+            
+            @Override
+            public void keyTyped(KeyEvent e) {
+                
+            }
+            
+            @Override
+            public void keyReleased(KeyEvent e) {
+                
+            }
+            
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+                System.err.println(e.getKeyCode());
+                System.out.println(e.getKeyChar()+"..."+KeyEvent.getKeyText(e.getKeyCode()));
+                Message message = new Message();
+                message.setVersion("1.0");
+                message.setMsgCode(11);
+                message.setReceiver(new String[] {receiver});
+                message.setSender(username2);
+                message.setEncoding(encoding);
+                message.setSendTime(System.currentTimeMillis());
+                message.setContent(e.getKeyCode()+"");
+                try {
+                    conn.sendMessage(EchoCoreUtils.messageToByteArr(message));
+                } catch (Throwable e1) {
+                    e1.printStackTrace();
+                }
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
         frame.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseMoved(MouseEvent e) {
