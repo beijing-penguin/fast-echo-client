@@ -148,7 +148,7 @@ public class 控制机 {
                     e1.printStackTrace();
                 }
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(20);
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
@@ -170,7 +170,7 @@ public class 控制机 {
                     e1.printStackTrace();
                 }
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(20);
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
@@ -261,7 +261,25 @@ public class 控制机 {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                System.err.println(e.getX()+"="+e.getY());
+                Message message = new Message();
+                message.setVersion("1.0");
+                message.setMsgCode(10);
+                message.setReceiver(new String[] {receiver});
+                message.setSender(username2);
+                message.setEncoding(encoding);
+                message.setSendTime(System.currentTimeMillis());
+                message.setContent((int)((e.getX()))+","+(int)((e.getY())));
+                try {
+                    conn.sendMessage(EchoCoreUtils.messageToByteArr(message));
+                } catch (Throwable e1) {
+                    e1.printStackTrace();
+                }
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
         frame.addMouseWheelListener(new MouseWheelListener() {

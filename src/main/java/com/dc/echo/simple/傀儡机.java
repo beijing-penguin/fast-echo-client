@@ -35,25 +35,31 @@ public class 傀儡机 {
                     try {
                         if (message.getMsgCode() == 4) {
                             myRobot.mouseMove(Integer.parseInt(message.getContent().split(",")[0]), Integer.parseInt(message.getContent().split(",")[1]));;
+                            myRobot.delay(50);
                         }
                         if (message.getMsgCode() == 5) {//鼠标按住
                             myRobot.mouseMove(Integer.parseInt(message.getContent().split(",")[0]), Integer.parseInt(message.getContent().split(",")[1]));;
                             myRobot.mousePress(InputEvent.BUTTON1_MASK);
+                            myRobot.delay(50);
                         }
                         if (message.getMsgCode() == 6) {//鼠标释放
                             myRobot.mouseMove(Integer.parseInt(message.getContent().split(",")[0]), Integer.parseInt(message.getContent().split(",")[1]));;
                             myRobot.mouseRelease(InputEvent.BUTTON1_MASK);
+                            myRobot.delay(50);
                         }
                         if (message.getMsgCode() == 7) {//右击
                             myRobot.mouseMove(Integer.parseInt(message.getContent().split(",")[0]), Integer.parseInt(message.getContent().split(",")[1]));;
                             myRobot.mousePress(InputEvent.BUTTON3_MASK);
+                            myRobot.delay(50);
                         }
                         if (message.getMsgCode() == 8) {//右击
                             myRobot.mouseMove(Integer.parseInt(message.getContent().split(",")[0]), Integer.parseInt(message.getContent().split(",")[1]));;
                             myRobot.mouseRelease(InputEvent.BUTTON3_MASK);
+                            myRobot.delay(50);
                         }
                         if (message.getMsgCode() == 9) {//滚动
                             myRobot.mouseWheel(Integer.parseInt(message.getContent()));
+                            myRobot.delay(50);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
