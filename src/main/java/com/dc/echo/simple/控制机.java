@@ -36,14 +36,18 @@ import net.coobird.thumbnailator.Thumbnails;
 
 public class 控制机 {
     public static void main(String[] args) throws Throwable {
-        EchoConnection conn = new EchoConnection("111.205.170.145", 6666);
+        EchoConnection conn = new EchoConnection("192.168.230.129", 6666);
         //EchoConnection conn = new EchoConnection("47.104.77.145", 6666);
         JFrame frame = new JFrame();
-        frame.setBackground(null);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setBackground(null);
+        //frame.setLocationRelativeTo(null);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setVisible(true);
+        //frame.setFocusable(true);
+        frame.setUndecorated(true);
+        frame.getGraphicsConfiguration().getDevice().setFullScreenWindow(frame);
         frame.setVisible(true);
-        frame.setFocusable(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         conn.setListener(new MessageListener() {
             @Override
             public void callback(ChannelHandlerContext ctx, byte[] dataByteArr) {
