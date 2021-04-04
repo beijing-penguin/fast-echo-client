@@ -36,7 +36,7 @@ import net.coobird.thumbnailator.Thumbnails;
 
 public class 控制机 {
     public static void main(String[] args) throws Throwable {
-        EchoConnection conn = new EchoConnection("192.168.230.129", 6666);
+        EchoConnection conn = new EchoConnection("8.140.9.168", 6666);
         //EchoConnection conn = new EchoConnection("47.104.77.145", 6666);
         JFrame frame = new JFrame();
         //frame.setBackground(null);
